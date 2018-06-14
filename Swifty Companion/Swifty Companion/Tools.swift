@@ -12,7 +12,7 @@ struct User: CustomStringConvertible {
     let imageURL: String
     let name: String
     let login: String
-    let level: String
+    let level: (String, String)
     let location: String
     let skills: [(String, String)]
     let projects: [(String, String, Bool)]

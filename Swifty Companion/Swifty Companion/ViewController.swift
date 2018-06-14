@@ -92,6 +92,26 @@ class ViewController: UIViewController {
         return ("0", "0")
     }
     
+    func getUserSkills(_ cursusList: Any) -> [(String, String)] {
+        var skillsList: [(String, String)] = []
+        if let cursus = cursusList as? NSArray {
+            for value in cursus {
+                if let current = value as? NSDictionary {
+                    if let id = current["cursus_id"] as? NSInteger, id == 1 {
+                        if let skills = current["skills"] as? NSArray {
+                            for value in skills {
+                                if let skill = value as? NSDictionary, let level = skill["level"] as? NSNumber, let name = skill["name"] as? String {
+                                    skillsList.append((String(format: "%f", level.floatValue), name))
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return skillsList
+    }
+    
     func SearchUser(login: String) {
         let url = NSURL(string: "https://api.intra.42.fr/v2/users/\(login)")
         let request = NSMutableURLRequest(url: url! as URL)
@@ -104,7 +124,7 @@ class ViewController: UIViewController {
             } else if let d = data {
                 do {
                     if let dic: NSDictionary = try JSONSerialization.jsonObject(with: d, options: JSONSerialization.ReadingOptions.mutableContainers) as? NSDictionary {
-                        print(dic)
+//                        print(dic)
                         guard
                             let login = dic["login"],
                             let name = dic["displayname"],
@@ -119,14 +139,13 @@ class ViewController: UIViewController {
                         if uLocation == nil {
                             uLocation = "unavalaible"
                         }
-                        let lvl = self.getUserLevel(cursusList)
                         if let loc = uLocation {
                             self.user = User(imageURL: imageURL as! String,
                                              name: name as! String,
                                              login: login as! String,
-                                             level: "level \(lvl.0) - \(lvl.1)%",
+                                             level: self.getUserLevel(cursusList),
                                              location: loc,
-                                             skills: [],
+                                             skills: self.getUserSkills(cursusList),
                                              projects: [])
                             DispatchQueue.main.async {
                                 self.performSegue(withIdentifier: "loadProfile", sender: nil)

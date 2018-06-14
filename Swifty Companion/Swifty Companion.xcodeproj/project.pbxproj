@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0211C50420D2B37800D2DC56 /* SkillTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0211C50320D2B37800D2DC56 /* SkillTableViewCell.swift */; };
 		02EDB0B720D270A0002E1940 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EDB0B620D270A0002E1940 /* AppDelegate.swift */; };
 		02EDB0B920D270A0002E1940 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EDB0B820D270A0002E1940 /* ViewController.swift */; };
 		02EDB0BC20D270A0002E1940 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02EDB0BA20D270A0002E1940 /* Main.storyboard */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0211C50320D2B37800D2DC56 /* SkillTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillTableViewCell.swift; sourceTree = "<group>"; };
 		02EDB0B320D270A0002E1940 /* Swifty Companion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Swifty Companion.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		02EDB0B620D270A0002E1940 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		02EDB0B820D270A0002E1940 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 				02EDB0C220D270A0002E1940 /* Info.plist */,
 				02EDB0C820D27CD1002E1940 /* Tools.swift */,
 				02EDB0CA20D285D3002E1940 /* UserViewController.swift */,
+				0211C50320D2B37800D2DC56 /* SkillTableViewCell.swift */,
 			);
 			path = "Swifty Companion";
 			sourceTree = "<group>";
@@ -143,6 +146,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				02EDB0C920D27CD1002E1940 /* Tools.swift in Sources */,
+				0211C50420D2B37800D2DC56 /* SkillTableViewCell.swift in Sources */,
 				02EDB0CB20D285D3002E1940 /* UserViewController.swift in Sources */,
 				02EDB0B920D270A0002E1940 /* ViewController.swift in Sources */,
 				02EDB0B720D270A0002E1940 /* AppDelegate.swift in Sources */,
