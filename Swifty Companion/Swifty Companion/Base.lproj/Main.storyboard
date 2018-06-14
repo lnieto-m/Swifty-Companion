@@ -106,7 +106,9 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="NVg-qa-ihe" secondAttribute="trailingMargin" id="D2J-Ta-T1e"/>
                                                 <constraint firstItem="hBZ-NL-9NA" firstAttribute="centerY" secondItem="32X-2a-VT9" secondAttribute="centerY" id="Sux-q5-FYG"/>
+                                                <constraint firstItem="hBZ-NL-9NA" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="32X-2a-VT9" secondAttribute="leadingMargin" id="eAQ-rw-URr"/>
                                                 <constraint firstItem="NVg-qa-ihe" firstAttribute="centerY" secondItem="32X-2a-VT9" secondAttribute="centerY" id="ft2-lh-DST"/>
                                                 <constraint firstItem="NVg-qa-ihe" firstAttribute="leading" secondItem="32X-2a-VT9" secondAttribute="leadingMargin" constant="10" id="lyg-rw-Xnd"/>
                                                 <constraint firstItem="hBZ-NL-9NA" firstAttribute="trailing" secondItem="32X-2a-VT9" secondAttribute="trailingMargin" constant="10" id="qv6-93-755"/>
@@ -130,15 +132,45 @@
                                     <constraint firstAttribute="height" constant="243" id="rp5-U0-C0R"/>
                                 </constraints>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="78" id="Rnc-kp-Wnn">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Projects" rowHeight="78" id="Rnc-kp-Wnn" customClass="ProjectTableViewCell" customModule="Swifty_Companion" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="78"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Rnc-kp-Wnn" id="uUs-CQ-6H1">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="77.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P1A-gI-NOx">
+                                                    <rect key="frame" x="25" y="28" width="45" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Grade" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q2E-ca-ug5">
+                                                    <rect key="frame" x="319" y="28" width="47" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="Q2E-ca-ug5" secondAttribute="trailing" constant="-6" id="8Yr-7y-R3c"/>
+                                                <constraint firstItem="P1A-gI-NOx" firstAttribute="leading" secondItem="uUs-CQ-6H1" secondAttribute="leadingMargin" constant="10" id="K1c-B6-f8X"/>
+                                                <constraint firstItem="Q2E-ca-ug5" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="uUs-CQ-6H1" secondAttribute="leadingMargin" id="UxG-2L-CAn"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="P1A-gI-NOx" secondAttribute="trailingMargin" id="o0S-X5-Dku"/>
+                                                <constraint firstItem="P1A-gI-NOx" firstAttribute="centerY" secondItem="uUs-CQ-6H1" secondAttribute="centerY" id="qEe-Yl-jKy"/>
+                                                <constraint firstItem="Q2E-ca-ug5" firstAttribute="centerY" secondItem="uUs-CQ-6H1" secondAttribute="centerY" id="zJC-Be-2sP"/>
+                                            </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="Grade" destination="Q2E-ca-ug5" id="u1I-JZ-jQ1"/>
+                                            <outlet property="Name" destination="P1A-gI-NOx" id="jY8-12-eHO"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="GD8-ga-wl1" id="eo9-8b-m0x"/>
+                                    <outlet property="delegate" destination="GD8-ga-wl1" id="4fH-Q3-xAS"/>
+                                </connections>
                             </tableView>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="9ka-iR-t1g">
                                 <rect key="frame" x="133" y="174" width="226" height="2"/>
@@ -192,6 +224,7 @@
                         <outlet property="Location" destination="pOo-Ox-NIp" id="MZD-Yb-EeL"/>
                         <outlet property="Login" destination="Ru6-JX-rtd" id="Sf5-ip-y5X"/>
                         <outlet property="Name" destination="t3Q-Hk-297" id="Spe-B5-jqX"/>
+                        <outlet property="ProjectsTable" destination="NjT-5z-yUU" id="U9b-uB-IVj"/>
                         <outlet property="SkillsTable" destination="Oa1-fP-rXo" id="lWu-bQ-2RY"/>
                         <outlet property="UserPhoto" destination="7zZ-8I-gs1" id="khq-3z-xrB"/>
                         <outlet property="XPBar" destination="9ka-iR-t1g" id="Qzx-gN-Mze"/>

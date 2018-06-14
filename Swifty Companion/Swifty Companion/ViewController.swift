@@ -79,8 +79,9 @@ class ViewController: UIViewController {
                 if let current = value as? NSDictionary {
                     if let id = current["cursus_id"] as? NSInteger, id == 1 {
                         let lvl = (current["level"] as? NSNumber)!
-                        let splitlvl = lvl.description.split(separator: ".")
+                        let splitlvl = String(format: "%.2f", lvl.floatValue).split(separator: ".")
                         if splitlvl.count > 1 {
+                            print(splitlvl[1])
                             return (String(splitlvl[0]), String(splitlvl[1]))
                         } else {
                             return (String(splitlvl[0]), "0")
@@ -101,7 +102,7 @@ class ViewController: UIViewController {
                         if let skills = current["skills"] as? NSArray {
                             for value in skills {
                                 if let skill = value as? NSDictionary, let level = skill["level"] as? NSNumber, let name = skill["name"] as? String {
-                                    skillsList.append((String(format: "%f", level.floatValue), name))
+                                    skillsList.append((String(format: "%.2f", level.floatValue), name))
                                 }
                             }
                         }
@@ -110,6 +111,37 @@ class ViewController: UIViewController {
             }
         }
         return skillsList
+    }
+    
+    func getUserProjects(_ projectList: Any) -> [(String, String, Bool)] {
+        var projects: [(String, String, Bool)] = []
+        if let list = projectList as? NSArray {
+            for value in list {
+                guard
+                    let current = value as? NSDictionary,
+                    let status = current["status"] as? String,
+                    let validated = current["validated?"] as? NSInteger,
+                    let proj = current["project"] as? NSDictionary,
+                    let name = proj["name"] as? String,
+                    let grade = current["final_mark"] as? NSInteger,
+                    let cursus = current["cursus_ids"] as? NSArray,
+                    let id = cursus[0] as? NSInteger
+                else {
+                    continue
+                }
+                if let _ = proj["parent_id"] as? NSNumber {
+                    continue
+                }
+                if status == "finished" && id == 1 {
+                    if validated == 1 {
+                        projects.append((name, grade.description, true))
+                    } else {
+                        projects.append((name, grade.description, false))
+                    }
+                }
+            }
+        }
+        return projects
     }
     
     func SearchUser(login: String) {
@@ -124,13 +156,14 @@ class ViewController: UIViewController {
             } else if let d = data {
                 do {
                     if let dic: NSDictionary = try JSONSerialization.jsonObject(with: d, options: JSONSerialization.ReadingOptions.mutableContainers) as? NSDictionary {
-//                        print(dic)
+                        print(dic)
                         guard
                             let login = dic["login"],
                             let name = dic["displayname"],
                             let location = dic["location"],
                             let cursusList = dic["cursus_users"],
-                            let imageURL = dic["image_url"]
+                            let imageURL = dic["image_url"],
+                            let projectList = dic["projects_users"]
                             else {
                                 print("error lol")
                                 return
@@ -146,7 +179,7 @@ class ViewController: UIViewController {
                                              level: self.getUserLevel(cursusList),
                                              location: loc,
                                              skills: self.getUserSkills(cursusList),
-                                             projects: [])
+                                             projects:self.getUserProjects(projectList))
                             DispatchQueue.main.async {
                                 self.performSegue(withIdentifier: "loadProfile", sender: nil)
                             }
