@@ -26,6 +26,11 @@ class UserViewController: UIViewController {
             Login.text = data.login
             Level.text = data.level
             Location.text = data.location
+            if let url = NSURL(string: data.imageURL) {
+                if let data = NSData(contentsOf: url as URL) {
+                    UserPhoto.image = UIImage(data: data as Data)
+                }
+            }
         }
         // Do any additional setup after loading the view.
     }
@@ -34,7 +39,4 @@ class UserViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
-    
 }

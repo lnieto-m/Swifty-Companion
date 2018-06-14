@@ -73,6 +73,25 @@ class ViewController: UIViewController {
         task.resume()
     }
     
+    func getUserLevel(_ cursusList: Any) -> (String, String) {
+        if let cursus = cursusList as? NSArray {
+            for value in cursus {
+                if let current = value as? NSDictionary {
+                    if let id = current["cursus_id"] as? NSInteger, id == 1 {
+                        let lvl = (current["level"] as? NSNumber)!
+                        let splitlvl = lvl.description.split(separator: ".")
+                        if splitlvl.count > 1 {
+                            return (String(splitlvl[0]), String(splitlvl[1]))
+                        } else {
+                            return (String(splitlvl[0]), "0")
+                        }
+                    }
+                }
+            }
+        }
+        return ("0", "0")
+    }
+    
     func SearchUser(login: String) {
         let url = NSURL(string: "https://api.intra.42.fr/v2/users/\(login)")
         let request = NSMutableURLRequest(url: url! as URL)
@@ -96,14 +115,23 @@ class ViewController: UIViewController {
                                 print("error lol")
                                 return
                         }
-                        self.user = User(imageURL: imageURL as! String,
-                                         name: name as! String,
-                                         login: login as! String,
-                                         level: "12",
-                                         location: location as! String,
-                                         skills: [],
-                                         projects: [])
-                        self.performSegue(withIdentifier: "loadProfile", sender: nil)
+                        var uLocation = location as? String
+                        if uLocation == nil {
+                            uLocation = "unavalaible"
+                        }
+                        let lvl = self.getUserLevel(cursusList)
+                        if let loc = uLocation {
+                            self.user = User(imageURL: imageURL as! String,
+                                             name: name as! String,
+                                             login: login as! String,
+                                             level: "level \(lvl.0) - \(lvl.1)%",
+                                             location: loc,
+                                             skills: [],
+                                             projects: [])
+                            DispatchQueue.main.async {
+                                self.performSegue(withIdentifier: "loadProfile", sender: nil)
+                            }
+                        }
                     }
                 } catch (let e) {
                     print(e)
