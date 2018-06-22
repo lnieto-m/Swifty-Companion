@@ -16,7 +16,6 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         } else {
             return ProjectsList.count
         }
-        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -31,8 +30,16 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
+    func crop(image:UIImage, cropRect:CGRect) -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(cropRect.size, false, image.scale)
+        let origin = CGPoint(x: cropRect.origin.x * CGFloat(-1), y: cropRect.origin.y * CGFloat(-1))
+        image.draw(at: origin)
+        let result = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext();
+        
+        return result
+    }
 
-    @IBOutlet weak var XPBar: UIProgressView!
     @IBOutlet weak var UserPhoto: UIImageView!
     @IBOutlet weak var Name: UILabel!
     @IBOutlet weak var Login: UILabel!
@@ -48,8 +55,11 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        XPBar.transform = XPBar.transform.scaledBy(x: 1, y: 20)
+        
+        SkillsTable.layer.cornerRadius = 10
+        SkillsTable.clipsToBounds = true
+        ProjectsTable.layer.cornerRadius = 10
+        ProjectsTable.clipsToBounds = true
         
         if let data = user {
             ProjectsList = data.projects
@@ -60,10 +70,17 @@ class UserViewController: UIViewController, UITableViewDelegate, UITableViewData
             Location.text = data.location
             if let url = NSURL(string: data.imageURL) {
                 if let data = NSData(contentsOf: url as URL) {
-                    UserPhoto.image = UIImage(data: data as Data)
+                    guard let image = UIImage(data: data as Data) else {
+                        return
+                    }
+                    let cropRect = CGRect(x: 0, y: 0, width: image.size.width, height: image.size.width)
+                    if let lol = crop(image: image, cropRect: cropRect) {
+                        UserPhoto.image = lol
+                        UserPhoto.layer.cornerRadius = UserPhoto.frame.height / 2
+                        UserPhoto.clipsToBounds = true
+                    }
                 }
             }
-            XPBar.progress = Float(data.level.1)! / 100
         }
         // Do any additional setup after loading the view.
     }

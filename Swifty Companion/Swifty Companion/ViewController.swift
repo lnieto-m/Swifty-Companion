@@ -16,9 +16,12 @@ class ViewController: UIViewController {
     var user: User?
     
     @IBOutlet weak var LoginField: UITextField!
+    @IBOutlet weak var SearchButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        SearchButton.layer.cornerRadius = SearchButton.frame.height / 4
         
         logApp()
     }
@@ -35,13 +38,10 @@ class ViewController: UIViewController {
             }
         }
     }
-
-//     self.performSegue(withIdentifier: "loadProfile", sender: nil)
-    
     
     @IBAction func SearchButton(_ sender: UIButton) {
         if let text = LoginField.text, text != "" {
-            SearchUser(login: text)
+            SearchUser(login: text.lowercased())
         }
     }
     
@@ -60,7 +60,6 @@ class ViewController: UIViewController {
                     if let dic: NSDictionary = try JSONSerialization.jsonObject(with: d, options: JSONSerialization.ReadingOptions.mutableContainers) as? NSDictionary {
                         if let d = dic["access_token"] {
                             self.token = d as! String
-                            print(d)
                         } else {
                             print("Authentification failed.")
                         }
@@ -81,7 +80,6 @@ class ViewController: UIViewController {
                         let lvl = (current["level"] as? NSNumber)!
                         let splitlvl = String(format: "%.2f", lvl.floatValue).split(separator: ".")
                         if splitlvl.count > 1 {
-                            print(splitlvl[1])
                             return (String(splitlvl[0]), String(splitlvl[1]))
                         } else {
                             return (String(splitlvl[0]), "0")
@@ -124,13 +122,16 @@ class ViewController: UIViewController {
                     let proj = current["project"] as? NSDictionary,
                     let name = proj["name"] as? String,
                     let grade = current["final_mark"] as? NSInteger,
-                    let cursus = current["cursus_ids"] as? NSArray,
-                    let id = cursus[0] as? NSInteger
+                    let cursus = current["cursus_ids"] as? NSArray
                 else {
                     continue
                 }
                 if let _ = proj["parent_id"] as? NSNumber {
                     continue
+                }
+                var id = 0
+                if cursus.count > 0 {
+                    id = cursus[0] as! NSInteger
                 }
                 if status == "finished" && id == 1 {
                     if validated == 1 {
@@ -156,7 +157,6 @@ class ViewController: UIViewController {
             } else if let d = data {
                 do {
                     if let dic: NSDictionary = try JSONSerialization.jsonObject(with: d, options: JSONSerialization.ReadingOptions.mutableContainers) as? NSDictionary {
-                        print(dic)
                         guard
                             let login = dic["login"],
                             let name = dic["displayname"],
@@ -165,7 +165,11 @@ class ViewController: UIViewController {
                             let imageURL = dic["image_url"],
                             let projectList = dic["projects_users"]
                             else {
-                                print("error lol")
+                                DispatchQueue.main.async {
+                                    let alert = UIAlertController(title: "Warning", message: "User not found", preferredStyle: UIAlertControllerStyle.alert)
+                                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                                    self.present(alert, animated: true, completion: nil)
+                                }
                                 return
                         }
                         var uLocation = location as? String
