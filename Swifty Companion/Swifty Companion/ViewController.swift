@@ -147,7 +147,13 @@ class ViewController: UIViewController {
     
     func SearchUser(login: String) {
         let url = NSURL(string: "https://api.intra.42.fr/v2/users/\(login)")
-        let request = NSMutableURLRequest(url: url! as URL)
+        guard let checkedURL = url else {
+            let alert = UIAlertController(title: "Warning", message: "Invalid user login", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
+        let request = NSMutableURLRequest(url: checkedURL as URL)
         request.httpMethod = "GET"
         request.setValue("Bearer \(self.token)", forHTTPHeaderField: "Authorization")
         let task = URLSession.shared.dataTask(with: request as URLRequest) {
